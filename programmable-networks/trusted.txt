@@ -1,0 +1,4 @@
+# ARP Guard trust list.
+# One entry per line, format:  <IPv4>  <MAC>
+
+172.28.55.10  02:42:ac:1c:37:0a

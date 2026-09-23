@@ -1,0 +1,17 @@
+FROM ubuntu:24.04
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      python3-bpfcc \
+      bpfcc-tools \
+      tcpdump \
+      iproute2 \
+      xz-utils \
+      procps && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY setup.sh /setup.sh
+RUN sed -i 's/\r$//' /setup.sh && chmod +x /setup.sh
+
+WORKDIR /work
+ENTRYPOINT ["/setup.sh"]

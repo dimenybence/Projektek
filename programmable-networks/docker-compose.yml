@@ -1,0 +1,52 @@
+services:
+  gateway:
+    image: alpine:3.19
+    container_name: arp_gateway
+    mac_address: 02:42:ac:1c:37:0a
+    networks:
+      lab:
+        ipv4_address: 172.28.55.10
+    command: sleep infinity
+
+  victim:
+    build:
+      context: .
+      dockerfile: Dockerfile.victim
+    container_name: arp_victim
+    privileged: true
+    mac_address: 02:42:ac:1c:37:14
+    networks:
+      lab:
+        ipv4_address: 172.28.55.20
+    volumes:
+      - ./:/work
+      - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/kernel/kheaders.tar.xz:/sys/kernel/kheaders.tar.xz:ro
+    stdin_open: true
+    tty: true
+
+  attacker:
+    image: alpine:3.19
+    container_name: arp_attacker
+    mac_address: 02:42:ac:1c:37:1e
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      lab:
+        ipv4_address: 172.28.55.30
+    volumes:
+      - ./:/work
+    working_dir: /work
+    command: >
+      sh -c "apk add --no-cache python3 py3-pip >/dev/null &&
+             pip3 install --break-system-packages --quiet scapy &&
+             echo '[attacker] scapy ready' &&
+             sleep infinity"
+
+networks:
+  lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.55.0/24
