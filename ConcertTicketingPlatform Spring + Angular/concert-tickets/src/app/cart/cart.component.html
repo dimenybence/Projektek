@@ -1,0 +1,63 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container mt-4">
+  <h2>Kosár</h2>
+  <div *ngIf="cart.length === 0" class="text-center mt-5">
+    <h3>A kosarad üres</h3>
+  </div>
+  <div *ngIf="cart.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Koncert neve</th>
+          <th>Jegykategória</th>
+          <th>Mennyiség</th>
+          <th>Ár</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart; let i = index">
+          <td>{{ item.event.name }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price }} Ft</td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteFromCart(i)">Törlés</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Teljes összeg: {{ totalPrice }} Ft</h3>
+
+    <div class="mt-4">
+      <h4>Fizetési mód</h4>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="bankCard" value="Bank Card" [(ngModel)]="paymentMethod" (change)="selectPaymentMethod('Bank Card')">
+        <label class="form-check-label" for="bankCard">
+          Bankkártya
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="PayPal" [(ngModel)]="paymentMethod" (change)="selectPaymentMethod('PayPal')">
+        <label class="form-check-label" for="paypal">
+          PayPal
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="googlePay" value="Google Pay" [(ngModel)]="paymentMethod" (change)="selectPaymentMethod('Google Pay')">
+        <label class="form-check-label" for="googlePay">
+          Google Pay
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="applePay" value="Apple Pay" [(ngModel)]="paymentMethod" (change)="selectPaymentMethod('Apple Pay')">
+        <label class="form-check-label" for="applePay">
+          Apple Pay
+        </label>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-4" (click)="checkout()">Vásárlás</button>
+  </div>
+</div>

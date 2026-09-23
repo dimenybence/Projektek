@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
+  <div class="container">
+    <a class="navbar-brand">Koncertek</a>
+
+    <div class="navbar-nav ms-auto d-flex align-items-center">
+      <ul class="navbar-nav d-flex flex-row">
+        <li class="nav-item" *ngIf="!loggedIn">
+          <button
+            class="btn btn-success nav-link me-2"
+            (click)="navigateToLogin()"
+          >
+            Bejelentkezés
+          </button>
+        </li>
+        <li class="nav-item d-flex" *ngIf="loggedIn && !isAdmin">
+          <button
+            class="btn btn-info nav-link me-2"
+            (click)="navigateToProfile()"
+          >
+            Profil
+          </button>
+          <button
+            class="btn btn-warning nav-link me-2"
+            (click)="navigateToCart()"
+          >
+            Kosár
+          </button>
+        </li>
+        <li class="nav-item" *ngIf="loggedIn">
+          <button
+            class="btn btn-danger nav-link me-2"
+            (click)="logOut()"
+          >
+            Kijeletkezés
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

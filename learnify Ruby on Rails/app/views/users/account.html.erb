@@ -1,0 +1,77 @@
+<div class="container mt-5">
+  <div class="row">
+    <!-- Bal oldali panel: Személyes adatok, jelentkezett kurzusok, kedvenc kurzusok -->
+    <div class="col-md-8">
+      <!-- Személyes adatok -->
+      <div class="mb-4">
+        <h2>Személyes adatok</h2>
+        <ul class="list-group mb-4">
+          <li class="list-group-item">
+            <strong>Felhasználónév:</strong> <%= @user.username %>
+          </li>
+          <li class="list-group-item">
+            <strong>Email cím:</strong> <%= @user.email %>
+          </li>
+          <li class="list-group-item">
+            <strong>Jelszó:</strong> ••••••••••
+          </li>
+        </ul>
+      </div>
+
+      <!-- Jelentkezett kurzusok -->
+      <div class="mb-4">
+        <h2>Jelentkezett kurzusok</h2>
+        <% if @user.enrolled_courses.present? %>
+          <ul class="list-group">
+            <% @user.enrolled_courses.each do |course| %>
+              <li class="list-group-item">
+                <%= course.name %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>Nincs jelentkezett kurzusod.</p>
+        <% end %>
+      </div>
+
+      <!-- Kedvenc kurzusok -->
+      <div>
+        <h2>Kedvenc kurzusok</h2>
+        <% if @favorites.present? %>
+          <ul class="list-group">
+            <% @favorites.each do |course| %>
+              <li class="list-group-item">
+                <%= course.name %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>Nincsenek kedvenc kurzusaid.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Jobb oldali panel: Profilkép -->
+    <div class="col-md-4">
+      <!-- Profilkép panel -->
+      <div class="card text-center">
+        <div class="card-body">
+          <h2>Profilkép</h2>
+          <!-- Profilkép megjelenítése -->
+          <img src="<%= @user.profile_picture_url || 'https://via.placeholder.com/150' %>"
+               alt="Profilkép"
+               class="img-thumbnail mb-3"
+               style="width: 150px; height: 150px;">
+
+          <!-- Profilkép frissítése -->
+          <%= form_with model: @user, url: update_profile_picture_user_path(@user), multipart: true, local: true do |form| %>
+            <div class="mb-3">
+              <%= form.file_field :profile_picture, class: "form-control" %>
+            </div>
+            <%= form.submit "Kép feltöltése", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

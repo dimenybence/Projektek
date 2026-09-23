@@ -1,0 +1,87 @@
+<h1 class="text-center my-4">Kurzusok</h1>
+
+<div class="container">
+  <div class="row">
+    <!-- Szűrő oldalsáv -->
+    <div class="col-md-3">
+      <h4>Szűrés</h4>
+      <%= form_with url: courses_path, method: :get, local: true do %>
+        <div class="mb-3">
+          <label for="name" class="form-label">Kurzus neve</label>
+          <%= text_field_tag :name, params[:name], class: "form-control", placeholder: "Kurzus neve" %>
+        </div>
+        <div class="mb-3">
+          <label for="instructor" class="form-label">Előadó neve</label>
+          <%= text_field_tag :instructor, params[:instructor], class: "form-control", placeholder: "Előadó neve" %>
+        </div>
+        <div class="mb-3">
+          <label for="difficulty_level" class="form-label">Nehézségi szint</label>
+          <%= select_tag :difficulty_level, options_for_select((1..5).to_a.map { |n| [n, n] }, params[:difficulty_level]), include_blank: "Bármelyik", class: "form-select" %>
+        </div>
+        <div>
+          <%= submit_tag "Szűrés", class: "btn btn-primary" %>
+          <%= link_to "Szűrés törlése", courses_path, class: "btn btn-secondary mt-2" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Táblázat a kurzusokkal -->
+    <div class="col-md-9">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+          <th>Kurzus neve</th>
+          <th>Előadó</th>
+          <th>Nehézségi szint (1-5)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @courses.each do |course| %>
+          <tr>
+            <td>
+              <a href="#" data-bs-toggle="modal" data-bs-target="#courseModal-<%= course.id %>">
+                <%= course.name %>
+              </a>
+            </td>
+            <td><%= course.instructor %></td>
+            <td><%= course.difficulty_level %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div>
+  <% @courses.each do |course| %>
+    <div class="modal fade" id="courseModal-<%= course.id %>" tabindex="-1" aria-labelledby="courseModalLabel-<%= course.id %>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="courseModalLabel-<%= course.id %>"><%= course.name %></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Előadó:</strong> <%= course.instructor %></p>
+            <p><strong>Nehézségi szint:</strong> <%= course.difficulty_level %></p>
+            <p><strong>Leírás:</strong> <%= course.description %></p>
+          </div>
+          <div class="modal-footer">
+            <% if current_user.enrolled_courses.include?(course) %>
+              <%= button_to "Lejelentkezés", enroll_toggle_course_path(course), method: :post, class: "btn btn-danger" %>
+            <% else %>
+              <%= button_to "Jelentkezés", enroll_toggle_course_path(course), method: :post, class: "btn btn-primary" %>
+            <% end %>
+            <% if current_user.favorite_courses.include?(course) %>
+              <%= button_to "Eltávolítás a kedvencek közül", favorite_toggle_course_path(course), method: :post, class: "btn btn-warning" %>
+            <% else %>
+              <%= button_to "Kedvencekhez adás", favorite_toggle_course_path(course), method: :post, class: "btn btn-success" %>
+            <% end %>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

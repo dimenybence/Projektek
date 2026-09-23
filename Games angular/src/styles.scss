@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+body{
+    background-color: #ddd;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Jersey+20&family=Teko:wght@700&display=swap');
+
+body,
+h1,
+div{
+    font-family: 'Teko';
+}

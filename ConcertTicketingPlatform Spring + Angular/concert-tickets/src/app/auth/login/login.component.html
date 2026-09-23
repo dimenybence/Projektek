@@ -1,0 +1,51 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg p-4">
+        <div class="card-header text-center bg-primary text-white">
+        <h2>Bejelentkezés</h2>
+      </div>
+      <div class="card-body">
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              class="form-control"
+              required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+              #emailInput="ngModel"
+            />
+            <div *ngIf="emailInput.errors?.['pattern']">Adj meg email cím formátumot!</div>
+          </div>
+  
+          <div class="mb-3">
+            <label for="password" class="form-label">Jelszó:</label>
+            <input
+              id="password"
+              type="password"
+              [(ngModel)]="password"
+              name="password"
+              class="form-control"
+              required
+              minlength="6"
+              #passwordInput="ngModel"
+            />
+            <div *ngIf="passwordInput.errors?.['minlength']">A jelszó hossza legalább 6 karakter legyen!</div>
+          </div>
+  
+          <div class="d-grid">
+            <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Bejelentkezés</button>
+          </div>
+        </form>
+  
+        <div class="text-center mt-3">
+          <button class="btn btn-link text-decoration-none" (click)="navigateToRegister()">Regisztráció</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ToDoApp</string>
+    <string name="done">Done</string>
+    <string name="name">Title</string>
+    <string name="description">Description</string>
+    <string name="priority">Priority</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="new_todo_item">New Todo</string>
+    <string name="button_ok">Ok</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="edit_todo_item">Edit Todo</string>
+    <string name="comparison_to_completed">Status</string>
+    <string name="label_done_todos">Done</string>
+    <string name="label_not_done_todos">To come</string>
+    <string name="label_todo_status">Todos</string>
+    <string name="title_required">Error</string>
+    <string-array name="priorities">
+        <item>High</item>
+        <item>Low</item>
+    </string-array>
+</resources>

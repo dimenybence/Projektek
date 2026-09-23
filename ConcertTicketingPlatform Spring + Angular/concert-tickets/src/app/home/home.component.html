@@ -1,0 +1,94 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container mt-4">
+    
+  <div class="row mb-4">
+    <div class="col-md-2">
+      <label for="filterDate" class="form-label">Dátum</label>
+      <input type="date" id="filterDate" [(ngModel)]="filterDate" (ngModelChange)="applyFilters()" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label for="filterTime" class="form-label">Idő</label>
+      <input type="time" id="filterTime" [(ngModel)]="filterTime" (ngModelChange)="applyFilters()" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label for="filterLocation" class="form-label">Helyszín</label>
+      <input type="text" id="filterLocation" [(ngModel)]="filterLocation" (ngModelChange)="applyFilters()" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label for="filterStock" class="form-label">Készlet</label>
+      <input type="number" id="filterStock" [(ngModel)]="filterStock" (ngModelChange)="applyFilters()" class="form-control" [disabled]="!filterCategory">
+    </div>
+    <div class="col-md-2">
+      <label for="filterPrice" class="form-label">Ár</label>
+      <input type="number" id="filterPrice" [(ngModel)]="filterPrice" (ngModelChange)="applyFilters()" class="form-control" [disabled]="!filterCategory">
+    </div>
+    <div class="col-md-2">
+      <label for="filterCategory" class="form-label">Kategória</label>
+      <select id="filterCategory" [(ngModel)]="filterCategory" (ngModelChange)="applyFilters()" class="form-control">
+        <option value="">Minden</option>
+        <option *ngFor="let category of ticketCategories" [value]="category">{{ category }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="filteredEvents.length === 0 && (filterDate || filterTime || filterLocation || filterStock || filterPrice || filterCategory)" class="text-center mt-5">
+    <h3>Ilyen koncertünk nincs</h3>
+  </div>
+  <div *ngIf="filteredEvents.length === 0 && !(filterDate || filterTime || filterLocation || filterStock || filterPrice || filterCategory)" class="text-center mt-5">
+    <h3>Még nincs koncert feltöltve az oldalra :(</h3>
+    <p>Térj vissza később</p>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-4" *ngFor="let event of filteredEvents">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ event.name }}</h5>
+          <p class="card-text">
+            <strong>Dátum:</strong> {{ event.date }}<br>
+            <strong>Idő:</strong> {{ event.time | timeFormat }}<br>
+            <strong>Helyszín:</strong> {{ event.location }}<br>
+            <strong>Jegyek:</strong>
+            <ul>
+              <li *ngFor="let ticket of event.tickets">
+                {{ ticket.category }} - Ár: {{ ticket.price }} Ft - Készlet: {{ ticket.stock }} db
+              </li>
+            </ul>
+          <button class="btn btn-primary" (click)="openModal(event)">Vásárlás</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{'show': isModalOpen}" tabindex="-1" role="dialog" style="display: block;" *ngIf="isModalOpen">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vásárlás</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="ticketCategory" class="form-label">Kategória</label>
+            <select id="ticketCategory" [(ngModel)]="selectedCategory" name="ticketCategory" class="form-control" required>
+              <option *ngFor="let category of ticketCategories" [value]="category">{{ category }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="quantity" class="form-label">Mennyiség</label>
+            <input type="number" id="quantity" [(ngModel)]="quantity" name="quantity" class="form-control" required min="1">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Mégse</button>
+        <button type="button" class="btn btn-primary" (click)="addToCart()">Kosárba</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container mt-4">
+    <h2>{{ isNewEvent ? 'Létrehozás' : 'Módosítás' }}</h2>
+    <form (ngSubmit)="saveEvent()">
+        <div class="mb-3">
+            <label for="name" class="form-label">Koncert neve</label>
+            <input type="text" id="name" [(ngModel)]="event.name" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Dátum</label>
+            <input type="date" id="date" [(ngModel)]="event.date" name="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="time" class="form-label">Idő</label>
+            <input type="time" id="time" [(ngModel)]="event.time" name="time" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Helyszín</label>
+            <input type="text" id="location" [(ngModel)]="event.location" name="location" class="form-control" required>
+        </div>
+
+
+
+        <div class="mt-4">
+            <h4>Standard jegy</h4>
+            <form>
+                <div class="mb-3">
+                    <label for="standardPrice" class="form-label">Ár (Ft)</label>
+                    <input type="number" id="standardPrice" [(ngModel)]="standardTicket.price" name="standardPrice"
+                        class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="standardStock" class="form-label">Készlet</label>
+                    <input type="number" id="standardStock" [(ngModel)]="standardTicket.stock" name="standardStock"
+                        class="form-control" required>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-4">
+            <h4>VIP jegy</h4>
+            <form>
+                <div class="mb-3">
+                    <label for="vipPrice" class="form-label">Ár (Ft)</label>
+                    <input type="number" id="vipPrice" [(ngModel)]="vipTicket.price" name="vipPrice"
+                        class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="vipStock" class="form-label">Készlet</label>
+                    <input type="number" id="vipStock" [(ngModel)]="vipTicket.stock" name="vipStock"
+                        class="form-control" required>
+                </div>
+            </form>
+        </div>
+
+        <button type="submit" class="btn btn-primary me-2 mb-3">{{ isNewEvent ? 'Létrehozás' : 'Módosítás' }}</button>
+        <button type="button" class="btn btn-secondary mb-3" (click)="cancelEdit()">Mégse</button>
+
+    </form>
+</div>

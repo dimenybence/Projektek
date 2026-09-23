@@ -1,0 +1,29 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-primary btn-lg mt-4" (click)="createNewEvent()">Új koncert létrehozása</button>
+  </div>
+    
+  <div class="row g-3 mt-4" *ngIf="events.length > 0">
+    <div class="col-md-4" *ngFor="let event of events">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ event.name }}</h5>
+          <p class="card-text">
+            <strong>Dátum:</strong> {{ event.date }}<br>
+            <strong>Idő:</strong> {{ event.time | timeFormat }}<br>
+            <strong>Helyszín:</strong> {{ event.location }}<br>
+            <strong>Jegyek:</strong>
+            <ul>
+              <li *ngFor="let ticket of event.tickets">
+                {{ ticket.category }} - Ár: {{ ticket.price }} Ft - Készlet: {{ ticket.stock }} db
+              </li>
+            </ul>
+          <button class="btn btn-warning me-2" (click)="editEvent(event.id)">Módosítás</button>
+          <button class="btn btn-danger" (click)="deleteEvent(event.id)">Törlés</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
